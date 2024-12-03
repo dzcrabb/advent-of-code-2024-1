@@ -1,8 +1,11 @@
 ﻿var reports = ReadReportsFromFile();
 
 var numSafeReports = reports.Count(IsReportSafe);
+var numSafeRepostsWithRemovedLevel = reports.Count(IsReportSafeWithRemovedLevel);
 
 Console.WriteLine($"Number of safe reports: {numSafeReports}");
+Console.WriteLine($"Number of reposts with one removed level allowed: {numSafeRepostsWithRemovedLevel}");
+
 Console.ReadKey();
 
 return;
@@ -38,3 +41,6 @@ bool IsReportSafe(List<int> report)
 
     return true;
 }
+
+bool IsReportSafeWithRemovedLevel(List<int> report) =>
+    report.Where((_, i) => IsReportSafe(report.Where((_, j) => i != j).ToList())).Any();
